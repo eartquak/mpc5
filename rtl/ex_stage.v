@@ -28,7 +28,7 @@ module ex_stage (
     input [4:0]addr_rt_i,
     input [4:0]addr_rd_i,
     input [31:0]pc_n_seq_i,
-    output reg [31:0]alu_res_o,
+    output [31:0]alu_res_o,
     output reg [31:0]data_o,
     output reg [4:0]addr_w_o,
     output reg [31:0]pc_beq_o,
@@ -47,11 +47,11 @@ module ex_stage (
     output reg mem_write_c_o,
     output reg branch_c_o,
     output reg j_to_pc_c_o,
-    output reg zero_c_o
+    output zero_c_o
 );
 
     reg [31:0]data_b_i;
-    reg [2:0]alu_c_i;
+    wire [2:0]alu_c;
 
     always @(*) begin
         data_b_i = alu_src_c_i?imm_i:data_rt_i;
@@ -60,7 +60,7 @@ module ex_stage (
     alu_control alu_control_m (
         .func6_i(func6_i),
         .alu_op_c_i(alu_op_c_i),
-        .alu_c_i(alu_c_i)
+        .alu_c_o(alu_c)
     );
 
     alu alu_m (
@@ -68,7 +68,7 @@ module ex_stage (
         .data_b_i(data_b_i),
         .alu_res_o(alu_res_o),
         .zero_c_o(zero_c_o),
-        .alu_c_i(alu_c_i)
+        .alu_c_i(alu_c)
     );
 
     always @(*) begin

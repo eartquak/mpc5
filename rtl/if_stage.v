@@ -23,8 +23,8 @@
 module if_stage (
     input [31:0]pc_beq_i,
     output reg [31:0]pc_n_seq_o,
-    output reg [31:0]instr_o,
-    input [31:0]pc_src_c_i,
+    output [31:0]instr_o,
+    input pc_src_c_i,
     input clk_i,
     input rst_ni
 );

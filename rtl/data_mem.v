@@ -39,6 +39,10 @@ module data_mem #(
             for (i = 0; i < 4; i = i + 1)
                 data_o[i*8 +: 8] = mem_t[addr_i + i];
         end
+        else begin
+            for (i = 0; i < 4; i = i + 1)
+                data_o[i*8 +: 8] = 8'b0;
+        end
     end
 
     always @(posedge clk_i or negedge rst_ni) begin

@@ -44,7 +44,7 @@ module control (
                 mem_write_c_o = 0;
                 branch_c_o = 0;
                 alu_op_c_o = 2'b10;
-                j_to_pc = 0;
+                j_to_pc_c_o = 0;
             end
 
             //LW
@@ -57,7 +57,7 @@ module control (
                 mem_write_c_o = 0;
                 branch_c_o = 0;
                 alu_op_c_o = 2'b00;
-                j_to_pc = 0;
+                j_to_pc_c_o = 0;
             end
 
             //SW
@@ -70,7 +70,7 @@ module control (
                 mem_write_c_o = 1;
                 branch_c_o = 0;
                 alu_op_c_o = 2'b00;
-                j_to_pc = 0;
+                j_to_pc_c_o = 0;
             end
 
             //BEQ
@@ -83,7 +83,7 @@ module control (
                 mem_write_c_o = 0;
                 branch_c_o = 1;
                 alu_op_c_o = 2'b01;
-                j_to_pc = 0;
+                j_to_pc_c_o = 0;
             end
 
             //J
@@ -96,7 +96,7 @@ module control (
                 mem_write_c_o = 0;
                 branch_c_o = 1;
                 alu_op_c_o = 2'b11; //X
-                j_to_pc = 1;
+                j_to_pc_c_o = 1;
             end
         endcase
     end
