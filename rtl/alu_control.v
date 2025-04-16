@@ -19,15 +19,3 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module alu_control (
-    input [5:0]func6_i,
-    input [1:0]alu_op_c_i,
-    output reg [2:0]alu_c_o
-);
-    always @(*) begin
-        alu_c_o[2] = alu_op_c_i[0] | (alu_op_c_i[1] & func6_i[1]);
-        alu_c_o[1] = (~alu_op_c_i[1]) | (~func6_i[2]);
-        alu_c_o[0] = alu_op_c_i[1] & (func6_i[3] | func6_i[0]);
-    end
-endmodule

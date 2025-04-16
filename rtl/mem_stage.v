@@ -23,20 +23,16 @@
 module mem_stage (
     input [31:0]alu_res_i,
     input [31:0]data_i,
-    input [4:0]addr_w_i,
+    input [3:0]addr_w_i,
     output [31:0]data_w_1_o,
     output reg [31:0]data_w_2_o,
-    output reg [4:0]addr_w_o,
+    output reg [3:0]addr_w_o,
     input mem_to_reg_c_i,
     input reg_write_c_i,
     input mem_read_c_i,
     input mem_write_c_i,
-    input branch_c_i,
-    input j_to_pc_c_i,
-    input zero_c_i,
     output reg mem_to_reg_c_o,
     output reg reg_write_c_o,
-    output reg pc_src_c_o,
     input clk_i,
     input rst_ni
 );
@@ -56,6 +52,5 @@ module mem_stage (
         addr_w_o = addr_w_i;
         mem_to_reg_c_o = mem_to_reg_c_i;
         reg_write_c_o = reg_write_c_i;
-        pc_src_c_o = zero_c_i & branch_c_i;
     end
 endmodule

@@ -21,10 +21,7 @@
 
 
 module if_stage (
-    input [31:0]pc_beq_i,
-    output reg [31:0]pc_n_seq_o,
     output [31:0]instr_o,
-    input pc_src_c_i,
     input clk_i,
     input rst_ni
 );
@@ -40,8 +37,7 @@ module if_stage (
     );
 
     always @(*) begin
-        pc_n_seq_o = pc_t + 4;
-        pc_n = pc_src_c_i?pc_beq_i:pc_n_seq_o;
+        pc_n = pc_t + 4;
     end
 
     always @(posedge clk_i or negedge rst_ni) begin
