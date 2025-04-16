@@ -1,0 +1,12 @@
+*.jou
+*.log
+*.str
+mpc5.cache/
+mpc5.gen/
+mpc5.ioplanning/
+mpc5.ip_user_files/
+mpc5.runs/
+mpc5.sim/
+mpc5.srcs/
+mpc5.xpr
+.session
