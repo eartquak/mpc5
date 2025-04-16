@@ -8,5 +8,6 @@ mpc5.ip_user_files/
 mpc5.runs/
 mpc5.sim/
 mpc5.srcs/
+mpc5.hw/
 mpc5.xpr
 .session
