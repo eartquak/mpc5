@@ -1,1 +1,1 @@
-To run: vivado -mode batch -source vivado.tcl
+To run: vivado -nolog -nojournal -mode batch -source vivado.tcl
