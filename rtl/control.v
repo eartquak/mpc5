@@ -36,8 +36,8 @@ module control (
                 alu_src_c_o = 1;
                 mem_to_reg_c_o = 1;
                 reg_write_c_o = 0;
-                mem_read_c_o = 1;
-                mem_write_c_o = 0;
+                mem_read_c_o = 0;
+                mem_write_c_o = 1;
                 alu_op_c_o = 2'b11;
             end
 

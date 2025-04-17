@@ -21,7 +21,8 @@
 
 
 module instr_mem #(
-    parameter IM_SIZE = 32
+    parameter IM_SIZE = 32,
+    parameter IM_ADDR_SIZE = 4
 ) (
     input [31:0]addr_i,
     output reg [31:0]instr_o,
@@ -37,7 +38,7 @@ module instr_mem #(
     always @(*) begin
         if (addr_i[1:0] == 2'b0) begin
             for (i = 0; i < 4; i = i + 1)
-                instr_o[8*i +: 8] = instr_t[addr_i + i];
+                instr_o[8*i +: 8] = instr_t[addr_i[IM_ADDR_SIZE-1:0] + i];
         end
         else
             $display("instruction misaligned");
@@ -48,7 +49,7 @@ module instr_mem #(
         if (rst_ni == 0) begin
             for (i = 0; i < IM_SIZE; i = i + 1)
                 instr_t[i] <= 8'b0;
-            {instr_t[3], instr_t[2], instr_t[1], instr_t[0]} <= 32'b1111_0011_0010_0001_0000000000000000;
+            {instr_t[3], instr_t[2], instr_t[1], instr_t[0]} <= 32'b0111_1000_0001_0101_0000000000000111;
         end
     end
 endmodule

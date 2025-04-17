@@ -41,7 +41,6 @@ module ex_stage (
 );
 
     reg [31:0]data_b_i;
-    wire [2:0]alu_c;
 
     always @(*) begin
         data_b_i = alu_src_c_i?imm_i:data_rn2_i;

@@ -31,7 +31,7 @@ module registers (
     input clk_i,
     input rst_ni
 );
-    reg [31:0]reg_t[0:16];
+    reg [31:0]reg_t[0:15];
     integer i;
 
     always @(*) begin
@@ -45,6 +45,7 @@ module registers (
                 reg_t[i] <= 32'b0;
             reg_t[1] <= 32'd32;
             reg_t[2] <= 32'd21;
+            reg_t[5] <= 32'd12;
         end
         else if (reg_write_c_i == 1) begin
             if (addr_w_i != 0)
