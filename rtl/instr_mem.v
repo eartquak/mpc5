@@ -49,7 +49,7 @@ module instr_mem #(
         if (rst_ni == 0) begin
             for (i = 0; i < IM_SIZE; i = i + 1)
                 instr_t[i] <= 8'b0;
-            {instr_t[3], instr_t[2], instr_t[1], instr_t[0]} <= 32'b0111_1000_0001_0101_0000000000000111;
+            {instr_t[3], instr_t[2], instr_t[1], instr_t[0]} <= 32'b1111_0011_0001_0010_0000000000000111;
         end
     end
 endmodule

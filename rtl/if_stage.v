@@ -27,7 +27,7 @@ module if_stage (
 );
     reg [31:0]pc_t;
 
-    reg [31:0]pc_n;
+    wire [31:0]pc_n;
 
     instr_mem instr_mem_m (
         .addr_i(pc_t),
@@ -36,9 +36,10 @@ module if_stage (
         .rst_ni(rst_ni)
     );
 
-    always @(*) begin
-        pc_n = pc_t + 4;
-    end
+    pc_incr pc_incr_m (
+        .pc_i(pc_t),
+        .pc_o(pc_n)
+    );
 
     always @(posedge clk_i or negedge rst_ni) begin
         if (rst_ni == 0)
