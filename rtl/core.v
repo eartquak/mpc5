@@ -126,8 +126,8 @@ module core (
         .mem_wb_reg_write_c(pipe_mem_wb_o[1]),
         .ex_mem_addr_rd(pipe_ex_mem_o[7:4]),
         .mem_wb_addr_rd(pipe_ex_mem_o[5:2]),
-        .id_ex_addr_rs(id_ex_addr_rs_reg),
-        .id_ex_addr_rt(id_ex_addr_rt_reg),
+        .id_ex_addr_rs(addr_rn1_id),
+        .id_ex_addr_rt(addr_rn2_id),
         .fa_c(fa_c),
         .fb_c(fb_c)
     );
@@ -176,6 +176,8 @@ module core (
         .data_rn2_i(pipe_id_ex_o[74:43]),
         .imm_i(pipe_id_ex_o[42:11]),
         .addr_wn_i(pipe_id_ex_o[10:7]),
+        .data_rn_mem_i(pipe_ex_mem_o[39:8]),
+        .data_rn_wb_i(data_w),
         .alu_res_o(pipe_ex_mem_i[71:40]),
         .data_o(pipe_ex_mem_i[39:8]),
         .addr_w_o(pipe_ex_mem_i[7:4]),
@@ -190,9 +192,7 @@ module core (
         .mem_to_reg_c_o(pipe_ex_mem_i[3]),
         .reg_write_c_o(pipe_ex_mem_i[2]),
         .mem_read_c_o(pipe_ex_mem_i[1]),
-        .mem_write_c_o(pipe_ex_mem_i[0]),
-        .clk_i(clk_i),
-        .rst_ni(rst_ni)
+        .mem_write_c_o(pipe_ex_mem_i[0])
     );
 
     mem_stage mem_stage_m (

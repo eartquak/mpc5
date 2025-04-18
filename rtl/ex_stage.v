@@ -25,6 +25,8 @@ module ex_stage (
     input [31:0]data_rn2_i,
     input [31:0]imm_i,
     input [3:0]addr_wn_i,
+    input [31:0]data_rn_mem_i,
+    input [31:0]data_rn_wb_i,
     output [31:0]alu_res_o,
     output reg [31:0]data_o,
     output reg [3:0]addr_w_o,
@@ -39,9 +41,7 @@ module ex_stage (
     output reg mem_to_reg_c_o,
     output reg reg_write_c_o,
     output reg mem_read_c_o,
-    output reg mem_write_c_o,
-    input clk_i,
-    input rst_ni
+    output reg mem_write_c_o
 );
 
     reg [31:0]data_a_i;
@@ -52,8 +52,8 @@ module ex_stage (
     always @(*) begin
         case(forward_a_c_i)
             2'b00: data_a_i = data_rn1_i;
-            2'b01: data_a_i = alu_res_o_tt;
-            2'b10: data_a_i = alu_res_o_t;
+            2'b01: data_a_i = data_rn_wb_i;
+            2'b10: data_a_i = data_rn_mem_i;
         endcase
 
         if (alu_src_c_i == 1)
@@ -61,27 +61,11 @@ module ex_stage (
         else begin 
             case(forward_b_c_i)
                 2'b00: data_b_i = data_rn2_i;
-                2'b01: data_b_i = alu_res_o_tt;
-                2'b10: data_b_i = alu_res_o_t;
+                2'b01: data_b_i = data_rn_wb_i;
+                2'b10: data_b_i = data_rn_mem_i;
             endcase
         end
     end
-
-    always @(posedge clk_i or negedge rst_ni) begin
-        if(rst_ni == 0) begin
-            alu_res_o_t <= 32'd0;
-            alu_res_o_tt <= 32'd0;
-        end
-        else begin 
-            alu_res_o_t <= alu_res_o;
-            alu_res_o_tt <= alu_res_o_t;
-        end
-    end
-
-    // alu_control alu_control_m (
-    //     .alu_op_c_i(alu_op_c_i),
-    //     .alu_c_o(alu_c)
-    // );
 
     alu alu_m (
         .data_a_i(data_a_i),
