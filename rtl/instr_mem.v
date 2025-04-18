@@ -38,7 +38,7 @@ module instr_mem #(
     always @(*) begin
         if (addr_i[1:0] == 2'b0) begin
             for (i = 0; i < 4; i = i + 1)
-                instr_o[8*i +: 8] = instr_t[addr_i + i];
+                instr_o[8*i +: 8] = instr_t[addr_i[IM_ADDR_SIZE-1:0] + i];
         end
         else
             $display("instruction misaligned");

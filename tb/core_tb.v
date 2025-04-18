@@ -33,7 +33,7 @@ module core_tb ();
         #5 clk_i = ~clk_i;
 
     initial begin
-        #1 rst_ni = 0;
+        rst_ni = 0;
         #7 rst_ni = 1;
 
         #95 $finish;
