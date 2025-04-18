@@ -39,7 +39,7 @@ module registers (
         data_rn2_o = reg_t[addr_rn2_i];
     end
 
-    always @(posedge clk_i or negedge rst_ni) begin
+    always @(negedge clk_i or negedge rst_ni) begin
         if (rst_ni == 0) begin
             for (i = 0; i < 16; i = i + 1)
                 reg_t[i] <= 32'b0;
