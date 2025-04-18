@@ -34,8 +34,8 @@ module core_tb ();
 
     initial begin
         #1 rst_ni = 0;
-        #10 rst_ni = 1;
+        #7 rst_ni = 1;
 
-        #200 $finish;
+        #95 $finish;
     end
 endmodule

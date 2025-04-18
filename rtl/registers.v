@@ -43,9 +43,11 @@ module registers (
         if (rst_ni == 0) begin
             for (i = 0; i < 16; i = i + 1)
                 reg_t[i] <= 32'b0;
-            reg_t[1] <= 32'd32;
-            reg_t[2] <= 32'd21;
-            reg_t[5] <= 32'd12;
+            reg_t[1] <= 32'h15045;
+            reg_t[2] <= 32'h3;
+            reg_t[3] <= 32'h0D421;
+            reg_t[8] <= 32'h964DA;
+            reg_t[5] <= 32'hBCAE1;
         end
         else if (reg_write_c_i == 1) begin
             if (addr_w_i != 0)

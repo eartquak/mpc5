@@ -98,6 +98,33 @@ module core (
     wire [3:0]addr_w;
     wire [31:0]data_w;
     wire reg_write_c;
+    wire [1:0]fa_c;
+    wire [1:0]fb_c;
+
+    reg [3:0]id_ex_addr_rs_reg;
+    reg [3:0]id_ex_addr_rt_reg;
+
+    always @(posedge clk_i or negedge rst_ni) begin
+        if(rst_ni == 0) begin
+            id_ex_addr_rs_reg <= 0;
+            id_ex_addr_rt_reg <= 0;
+        end
+        else begin
+            id_ex_addr_rs_reg <= pipe_if_id_o[23:20];
+            id_ex_addr_rt_reg <= pipe_if_id_o[19:16];
+        end
+    end
+
+    forward forward_m (
+        .ex_mem_reg_write_c(pipe_ex_mem_o[2]),
+        .mem_wb_reg_write_c(pipe_mem_wb_o[1]),
+        .ex_mem_addr_rd(pipe_ex_mem_o[7:4]),
+        .mem_wb_addr_rd(pipe_ex_mem_o[5:2]),
+        .id_ex_addr_rs(id_ex_addr_rs_reg),
+        .id_ex_addr_rt(id_ex_addr_rt_reg),
+        .fa_c(fa_c),
+        .fb_c(fb_c)
+    );
 
     if_stage if_stage_m (
         .instr_o(pipe_if_id_i[31:0]),
@@ -110,7 +137,7 @@ module core (
         .addr_w_i(addr_w),
         .data_w_i(data_w),
         .data_rn1_o(pipe_id_ex_i[106:75]),
-        .data_rn2_o(pipe_id_ex_i[74:43]),
+        .data_rn2_o(pipe_id_ex_i[74:43]),   
         .imm_o(pipe_id_ex_i[42:11]),
         .addr_wn_o(pipe_id_ex_i[10:7]),
         .reg_write_c_i(reg_write_c),
@@ -138,10 +165,14 @@ module core (
         .mem_read_c_i(pipe_id_ex_o[3]),
         .mem_write_c_i(pipe_id_ex_o[2]),
         .alu_op_c_i(pipe_id_ex_o[1:0]),
+        .forward_a_c_i(fa_c),
+        .forward_b_c_i(fb_c),
         .mem_to_reg_c_o(pipe_ex_mem_i[3]),
         .reg_write_c_o(pipe_ex_mem_i[2]),
         .mem_read_c_o(pipe_ex_mem_i[1]),
-        .mem_write_c_o(pipe_ex_mem_i[0])
+        .mem_write_c_o(pipe_ex_mem_i[0]),
+        .clk_i(clk_i),
+        .rst_ni(rst_ni)
     );
 
     mem_stage mem_stage_m (

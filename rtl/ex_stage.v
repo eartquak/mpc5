@@ -34,16 +34,48 @@ module ex_stage (
     input mem_read_c_i,
     input mem_write_c_i,
     input [1:0]alu_op_c_i,
+    input [1:0]forward_a_c_i,
+    input [1:0]forward_b_c_i,
     output reg mem_to_reg_c_o,
     output reg reg_write_c_o,
     output reg mem_read_c_o,
-    output reg mem_write_c_o
+    output reg mem_write_c_o,
+    input clk_i,
+    input rst_ni
 );
 
+    reg [31:0]data_a_i;
     reg [31:0]data_b_i;
-
+    reg [31:0]alu_res_o_t;
+    reg [31:0]alu_res_o_tt;
+    
     always @(*) begin
-        data_b_i = alu_src_c_i?imm_i:data_rn2_i;
+        case(forward_a_c_i)
+            2'b00: data_a_i = data_rn1_i;
+            2'b01: data_a_i = alu_res_o_tt;
+            2'b10: data_a_i = alu_res_o_t;
+        endcase
+
+        if (alu_src_c_i == 1)
+            data_b_i = imm_i;
+        else begin 
+            case(forward_b_c_i)
+                2'b00: data_b_i = data_rn2_i;
+                2'b01: data_b_i = alu_res_o_tt;
+                2'b10: data_b_i = alu_res_o_t;
+            endcase
+        end
+    end
+
+    always @(posedge clk_i or negedge rst_ni) begin
+        if(rst_ni == 0) begin
+            alu_res_o_t <= 32'd0;
+            alu_res_o_tt <= 32'd0;
+        end
+        else begin 
+            alu_res_o_t <= alu_res_o;
+            alu_res_o_tt <= alu_res_o_t;
+        end
     end
 
     // alu_control alu_control_m (
@@ -52,12 +84,12 @@ module ex_stage (
     // );
 
     alu alu_m (
-        .data_a_i(data_rn1_i),
+        .data_a_i(data_a_i),
         .data_b_i(data_b_i),
         .alu_res_o(alu_res_o),
         .alu_c_i(alu_op_c_i)
     );
-
+    
     always @(*) begin
         data_o = data_rn2_i;
         addr_w_o = addr_wn_i;
