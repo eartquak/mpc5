@@ -22,6 +22,7 @@
 
 module pc_incr (
     input [31:0]pc_i,
+    input pc_write_c_i,
     output reg [31:0]pc_o
 );
     reg [32:2]c = 30'h0000001;
@@ -35,7 +36,8 @@ module pc_incr (
     endgenerate
 
     always @(*) begin
-        pc_o = {(pc_i[31:2] ^ c[31:2]), pc_i[1:0]};
+        if (pc_write_c_i)
+            pc_o = {(pc_i[31:2] ^ c[31:2]), pc_i[1:0]};
     end
 
 

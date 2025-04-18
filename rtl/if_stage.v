@@ -21,6 +21,7 @@
 
 
 module if_stage (
+    input pc_write_c_i,
     output [31:0]instr_o,
     input clk_i,
     input rst_ni
@@ -38,7 +39,8 @@ module if_stage (
 
     pc_incr pc_incr_m (
         .pc_i(pc_t),
-        .pc_o(pc_n)
+        .pc_o(pc_n),
+        .pc_write_c_i(pc_write_c_i)
     );
 
     always @(posedge clk_i or negedge rst_ni) begin

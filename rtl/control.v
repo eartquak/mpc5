@@ -22,6 +22,7 @@
 
 module control (
     input [3:0]opcode_i,
+    input s_t_i,
     output reg alu_src_c_o,
     output reg mem_to_reg_c_o,
     output reg reg_write_c_o,
@@ -30,6 +31,7 @@ module control (
     output reg [1:0]alu_op_c_o
 );
     always @(*) begin
+        
         case(opcode_i)
             //SW
             4'b0000: begin
