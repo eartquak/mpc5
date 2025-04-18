@@ -128,6 +128,7 @@ module core (
 
     if_stage if_stage_m (
         .instr_o(pipe_if_id_i[31:0]),
+        .pc_write_c_i(1),
         .clk_i(clk_i),
         .rst_ni(rst_ni)
     );
