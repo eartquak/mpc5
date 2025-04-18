@@ -28,7 +28,10 @@ module id_stage (
     output [31:0]data_rn2_o,
     output reg [31:0]imm_o,
     output reg [3:0]addr_wn_o,
+    output reg [3:0]addr_rn1_o,
+    output reg [3:0]addr_rn2_o,
     input reg_write_c_i,
+    input stall_control_c_i,
     output alu_src_c_o,
     output mem_to_reg_c_o,
     output reg_write_c_o,
@@ -67,6 +70,7 @@ module id_stage (
 
     control control_m (
         .opcode_i(opcode),
+        .stall_control_c_i(stall_control_c_i),
         .alu_src_c_o(alu_src_c_o),
         .mem_to_reg_c_o(mem_to_reg_c_o),
         .reg_write_c_o(reg_write_c_o),
@@ -78,5 +82,7 @@ module id_stage (
     always @(*) begin
         addr_wn_o = addr_wn;
         imm_o = imm >>> 16;
+        addr_rn1_o = addr_rn1;
+        addr_rn2_o = addr_rn2;
     end
 endmodule

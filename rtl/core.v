@@ -26,6 +26,7 @@ module core (
 );  
     reg flush = 0;
     reg stall = 0;
+    wire stall_if_id;
 
 
     wire [31:0]pipe_if_id_i;
@@ -34,7 +35,7 @@ module core (
         .pipe_i(pipe_if_id_i),
         .pipe_o(pipe_if_id_o),
         .flush_c_i(flush),
-        .stall_c_i(stall),
+        .stall_c_i(stall_if_id),
         .clk_i(clk_i),
         .rst_ni(rst_ni)
     );
@@ -104,6 +105,11 @@ module core (
     reg [3:0]id_ex_addr_rs_reg;
     reg [3:0]id_ex_addr_rt_reg;
 
+    wire [3:0]addr_rn1_id;
+    wire [3:0]addr_rn2_id;
+    wire pc_write_c;
+    wire stall_control_c;
+
     always @(posedge clk_i or negedge rst_ni) begin
         if(rst_ni == 0) begin
             id_ex_addr_rs_reg <= 0;
@@ -126,9 +132,19 @@ module core (
         .fb_c(fb_c)
     );
 
+    hazard_detect hazard_detect_m (
+        .mem_read_ex_c_i(pipe_id_ex_o[3]),
+        .addr_wn_ex_i(pipe_id_ex_o[10:7]),
+        .addr_rn2_id_i(addr_rn1_id),
+        .addr_rn1_id_i(addr_rn2_id),
+        .stall_if_id_c_o(stall_if_id),
+        .pc_write_c_o(pc_write_c),
+        .stall_control_c_o(stall_control_c)
+    );
+
     if_stage if_stage_m (
         .instr_o(pipe_if_id_i[31:0]),
-        .pc_write_c_i(1),
+        .pc_write_c_i(pc_write_c),
         .clk_i(clk_i),
         .rst_ni(rst_ni)
     );
@@ -138,10 +154,13 @@ module core (
         .addr_w_i(addr_w),
         .data_w_i(data_w),
         .data_rn1_o(pipe_id_ex_i[106:75]),
-        .data_rn2_o(pipe_id_ex_i[74:43]),   
+        .data_rn2_o(pipe_id_ex_i[74:43]),
         .imm_o(pipe_id_ex_i[42:11]),
         .addr_wn_o(pipe_id_ex_i[10:7]),
+        .addr_rn1_o(addr_rn1_id),
+        .addr_rn2_o(addr_rn2_id),
         .reg_write_c_i(reg_write_c),
+        .stall_control_c_i(stall_control_c),
         .alu_src_c_o(pipe_id_ex_i[6]),
         .mem_to_reg_c_o(pipe_id_ex_i[5]),
         .reg_write_c_o(pipe_id_ex_i[4]),
